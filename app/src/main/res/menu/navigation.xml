@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/wechat_icon"
+        android:orderInCategory="0"
+        android:title="@string/wechat"/>
+
+    <item
+        android:icon="@drawable/alipay_icon"
+        android:orderInCategory="1"
+        android:title="@string/alipay"/>
+</menu>

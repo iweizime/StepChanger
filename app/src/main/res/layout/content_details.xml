@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="me.iweizi.stepchanger.wechat.WechatDetailsActivity"
+    tools:showIn="@layout/activity_wechat_details">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="30dp"
+        tools:context="me.iweizi.wechatstepchanger.DetailsActivity">
+
+
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/last_upload_step"/>
+
+
+        <TextView
+            android:id="@+id/last_upload_step_text_view"
+            style="@style/number"
+            android:hint="@string/last_upload_step"
+            android:textAlignment="center"/>
+
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/last_upload_time"/>
+
+
+        <TextView
+            android:id="@+id/last_upload_time_text_view"
+            style="@style/number"
+            android:hint="@string/last_upload_time"
+            android:textAlignment="center"/>
+
+
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/last_save_time"/>
+
+
+        <TextView
+            android:id="@+id/last_save_time_text_view"
+            style="@style/number"
+            android:hint="@string/last_save_time"
+            android:textAlignment="center"/>
+
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/last_save_sensor_step"/>
+
+
+        <TextView
+            android:id="@+id/last_save_sensor_step_text_view"
+            style="@style/number"
+            android:hint="@string/last_save_sensor_step"
+            android:textAlignment="center"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/details_load_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/load"
+                tools:ignore="ButtonStyle"/>
+
+            <Button
+                android:id="@+id/details_back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/back"
+                tools:ignore="ButtonStyle"/>
+
+            <Button
+                android:id="@+id/details_store_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/store"
+                tools:ignore="ButtonStyle"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

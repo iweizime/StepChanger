@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">步数修改器</string>
+    <string name="wechat">微信</string>
+    <string name="alipay">支付宝</string>
+    <string name="current_today_step">当前今日步数</string>
+    <string name="increase">增加</string>
+    <string name="decrease">减少</string>
+    <string name="load">加载</string>
+    <string name="store">保存</string>
+    <string name="details">详情</string>
+    <string name="back">返回</string>
+    <string name="require_access_title">获取权限</string>
+    <string name="require_access_message">正在获取读写权限……</string>
+    <string name="require_failed_message">你的设备没有root</string>
+    <string name="loaded">已加载</string>
+    <string name="stored">已保存</string>
+    <string name="canceled">已取消</string>
+    <string name="title_activity_wechat_details">微信运动详情</string>
+    <string name="title_activity_alipay_details">支付宝运动详情</string>
+    <string name="too_fast">你走的太快了，修改可能会失败！</string>
+    <string name="too_many">你走的太多了，修改可能会失败！</string>
+    <string name="too_many_fast">你走的太多太快了，修改可能会失败！</string>
+    <string name="need_load">请先加载</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="note">注意</string>
+    <string name="is_continue">是否继续？</string>
+
+    <string name="last_upload_step">最后上传步数</string>
+    <string name="last_upload_time">最后上传时间</string>
+    <string name="last_save_time">最后保存时间</string>
+    <string name="last_save_sensor_step">最后传感器步数</string>
+</resources>
