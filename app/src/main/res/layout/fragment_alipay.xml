@@ -16,10 +16,10 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/alipay"
             android:scaleX="2"
             android:scaleY="2"
-            android:src="@drawable/alipay_icon_round"
-            android:contentDescription="@string/alipay"/>
+            android:src="@drawable/alipay_icon_round"/>
 
     </LinearLayout>
 

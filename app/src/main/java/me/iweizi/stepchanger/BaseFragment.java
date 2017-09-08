@@ -72,7 +72,7 @@ public class BaseFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 0) {
-                    s = "0";
+                    return;
                 }
                 mStepData.setStep(Integer.valueOf(s.toString()));
             }

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import me.iweizi.stepchanger.alipay.AlipayFragment;
+import me.iweizi.stepchanger.qq.QQFragment;
 import me.iweizi.stepchanger.utils.StepCounterSensorListener;
 import me.iweizi.stepchanger.wechat.WechatFragment;
 
@@ -20,8 +21,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     private BottomNavigationView mBottomNavigationView;
     private ViewPager mViewPager;
-    private ArrayList<Fragment> mFragments;
-
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -32,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         }
 
     };
+    private ArrayList<Fragment> mFragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         // mFragments.add顺序需要和res/menu/navigation.xml中的orderInCategory 0,1保持一致
         mFragments = new ArrayList<>();
         mFragments.add(WechatFragment.newInstance());
+        mFragments.add(QQFragment.newInstance());
         mFragments.add(AlipayFragment.newInstance());
 
         FragmentManager fragmentManager = getSupportFragmentManager();

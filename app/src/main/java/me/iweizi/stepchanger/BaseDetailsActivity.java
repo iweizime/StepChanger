@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public abstract class BaseDetailsActivity extends AppCompatActivity {
+    protected int mLayoutId;
+    protected StepData mStepData;
     private Button mLoadButton;
     private Button mBackButton;
     private Button mStoreButton;
@@ -21,9 +23,6 @@ public abstract class BaseDetailsActivity extends AppCompatActivity {
     private TextView mLastUploadTimeTV;
     private TextView mLastSaveTimeTV;
     private TextView mLastSaveSensorStepTV;
-
-    protected int mLayoutId;
-    protected StepData mStepData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

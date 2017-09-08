@@ -28,68 +28,12 @@ public class StepData {
 
     private static final double MAX_STEP_PER_SEC = 5.0;
     private static final int MAX_STEP = 80000;
-
-    private long mStep;
-    private boolean isChecked;
-    private boolean isContinue;
-
     protected String[] ROOT_CMD;
     protected int mLoadButtonId;
     protected int mStoreButtonId;
-
-    class RootTask extends AsyncTask<Boolean, Void, Void> {
-        private Context mContext = null;
-        private boolean mSuAvailable;
-        @SuppressWarnings("deprecation")
-        private ProgressDialog mProgressDialog = null;
-        private AlertDialog mAlertDialog = null;
-        private boolean isRead;
-
-        public RootTask(Context context) {
-            mContext = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            //noinspection deprecation
-            mProgressDialog = new ProgressDialog(mContext);
-            mProgressDialog.setTitle(R.string.require_access_title);
-            mProgressDialog.setMessage(mContext.getString(R.string.require_access_message));
-            mProgressDialog.setIndeterminate(true);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Boolean... booleans) {
-            isRead = booleans[0];
-            mSuAvailable = Shell.SU.available();
-            if (mSuAvailable) {
-                Shell.SU.run(ROOT_CMD);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void results) {
-            mProgressDialog.dismiss();
-
-            if (mSuAvailable) {
-                if (isRead && canRead()) {
-                    ((Activity) mContext).findViewById(mLoadButtonId).performClick();
-                } else if (canWrite()) {
-                    ((Activity) mContext).findViewById(mStoreButtonId).performClick();
-                }
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
-                        .setTitle(R.string.note)
-                        .setMessage(R.string.require_failed_message)
-                        .setCancelable(true);
-                mAlertDialog = builder.create();
-                mAlertDialog.show();
-            }
-        }
-    }
+    private long mStep;
+    private boolean isChecked;
+    private boolean isContinue;
 
     protected StepData() {
         mStep = -1;
@@ -250,5 +194,59 @@ public class StepData {
     // 子类应该实现
     public boolean isLoaded() {
         return false;
+    }
+
+    class RootTask extends AsyncTask<Boolean, Void, Void> {
+        private Context mContext = null;
+        private boolean mSuAvailable;
+        @SuppressWarnings("deprecation")
+        private ProgressDialog mProgressDialog = null;
+        private AlertDialog mAlertDialog = null;
+        private boolean isRead;
+
+        public RootTask(Context context) {
+            mContext = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            //noinspection deprecation
+            mProgressDialog = new ProgressDialog(mContext);
+            mProgressDialog.setTitle(R.string.require_access_title);
+            mProgressDialog.setMessage(mContext.getString(R.string.require_access_message));
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Boolean... booleans) {
+            isRead = booleans[0];
+            mSuAvailable = Shell.SU.available();
+            if (mSuAvailable) {
+                Shell.SU.run(ROOT_CMD);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void results) {
+            mProgressDialog.dismiss();
+
+            if (mSuAvailable) {
+                if (isRead && canRead()) {
+                    ((Activity) mContext).findViewById(mLoadButtonId).performClick();
+                } else if (canWrite()) {
+                    ((Activity) mContext).findViewById(mStoreButtonId).performClick();
+                }
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+                        .setTitle(R.string.note)
+                        .setMessage(R.string.require_failed_message)
+                        .setCancelable(true);
+                mAlertDialog = builder.create();
+                mAlertDialog.show();
+            }
+        }
     }
 }

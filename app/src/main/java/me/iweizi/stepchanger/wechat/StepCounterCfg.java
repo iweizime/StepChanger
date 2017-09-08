@@ -23,11 +23,11 @@ class StepCounterCfg extends StepData {
     private static final int CURRENT_TODAY_STEP = 201;
     private static final int PRE_SENSOR_STEP = 203;
     private static final int LAST_SAVE_STEP_TIME = 204;
-/*
-    static final int BEGIN_OF_TODAY = 202;
-    static final int REBOOT_TIME = 205;
-    static final int SENSOR_TIME_STAMP = 209;
-*/
+    /*
+        static final int BEGIN_OF_TODAY = 202;
+        static final int REBOOT_TIME = 205;
+        static final int SENSOR_TIME_STAMP = 209;
+    */
     private static final int LAST_UPLOAD_TIME = 3;
     private static final int LAST_UPLOAD_STEP = 4;
 
@@ -36,6 +36,7 @@ class StepCounterCfg extends StepData {
     @SuppressLint("SdCardPath")
     private static final String MM_STEP_COUNTER_CFG = "/data/data/com.tencent.mm/MicroMsg/MM_stepcounter.cfg";
     private static final String WECHAT = "com.tencent.mm";
+    private static final String WECHAT_EX = "com.tencent.mm:exdevice";
     private static final StepCounterCfg sStepCounterCfg = new StepCounterCfg();
     private final File mStepCounterCfgFile;
     private final File mMMStepCounterCfgFile;
@@ -67,6 +68,7 @@ class StepCounterCfg extends StepData {
         FileInputStream fis;
         ObjectInputStream ois;
 
+        killWechatProcess(context);
         try {
 
             fis = new FileInputStream(mStepCounterCfgFile);
@@ -96,9 +98,7 @@ class StepCounterCfg extends StepData {
             return FAIL;
         }
         try {
-            ActivityManager am = (ActivityManager)
-                    context.getSystemService(Context.ACTIVITY_SERVICE);
-            am.killBackgroundProcesses(WECHAT);
+            killWechatProcess(context);
             fos = new FileOutputStream(STEP_COUNTER_CFG);
             oos = new ObjectOutputStream(fos);
             mStepCounterMap.put(CURRENT_TODAY_STEP, getStep());
@@ -162,5 +162,12 @@ class StepCounterCfg extends StepData {
     @Override
     public boolean isLoaded() {
         return mMMStepCounterMap != null && mStepCounterMap != null;
+    }
+
+    private void killWechatProcess(Context context) {
+        ActivityManager am = (ActivityManager)
+                context.getSystemService(Context.ACTIVITY_SERVICE);
+        am.killBackgroundProcesses(WECHAT);
+        am.killBackgroundProcesses(WECHAT_EX);
     }
 }

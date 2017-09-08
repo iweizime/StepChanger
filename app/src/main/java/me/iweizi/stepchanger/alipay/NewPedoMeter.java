@@ -38,10 +38,10 @@ public class NewPedoMeter extends StepData {
     private final String mNewPedometerPrivate;
     private final String mAlipayNewPedometer;
     private final String mAlipayNewPedometerPrivate;
-    private SharedPreferences mNewPedometerSP;
-    private SharedPreferences mNewPedometerPrivateSP;
     private final File mAlipayNewPedometerFile;
     private final File mAlipayNewPedometerPrivateFile;
+    private SharedPreferences mNewPedometerSP;
+    private SharedPreferences mNewPedometerPrivateSP;
 
     private NewPedoMeter() {
         super();

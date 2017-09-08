@@ -2,6 +2,7 @@
     <string name="app_name">步数修改器</string>
     <string name="wechat">微信</string>
     <string name="alipay">支付宝</string>
+    <string name="qq">QQ</string>
     <string name="current_today_step">当前今日步数</string>
     <string name="increase">增加</string>
     <string name="decrease">减少</string>
@@ -17,6 +18,7 @@
     <string name="canceled">已取消</string>
     <string name="title_activity_wechat_details">微信运动详情</string>
     <string name="title_activity_alipay_details">支付宝运动详情</string>
+    <string name="title_activity_qq_details">QQ运动详情</string>
     <string name="too_fast">你走的太快了，修改可能会失败！</string>
     <string name="too_many">你走的太多了，修改可能会失败！</string>
     <string name="too_many_fast">你走的太多太快了，修改可能会失败！</string>
@@ -30,4 +32,5 @@
     <string name="last_upload_time">最后上传时间</string>
     <string name="last_save_time">最后保存时间</string>
     <string name="last_save_sensor_step">最后传感器步数</string>
+    <string name="action_settings">Settings</string>
 </resources>

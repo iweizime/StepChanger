@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:gravity="center"
               android:orientation="vertical"
-              tools:context="me.iweizi.stepchanger.wechat.WechatFragment">
+              tools:context="me.iweizi.stepchanger.qq.QQFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,10 +16,10 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/wechat"
+            android:contentDescription="@string/qq"
             android:scaleX="2"
             android:scaleY="2"
-            android:src="@drawable/wechat_icon_round"/>
+            android:src="@drawable/qq_icon_round"/>
 
     </LinearLayout>
 
@@ -44,7 +44,7 @@
             android:padding="24dp">
 
             <ImageButton
-                android:id="@+id/wechat_sub_button"
+                android:id="@+id/qq_sub_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -52,7 +52,7 @@
                 android:src="@drawable/ic_action_sub"/>
 
             <EditText
-                android:id="@+id/wechat_current_today_step_edit_text"
+                android:id="@+id/qq_current_today_step_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -61,7 +61,7 @@
                 android:textAlignment="center"/>
 
             <ImageButton
-                android:id="@+id/wechat_add_button"
+                android:id="@+id/qq_add_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -77,21 +77,21 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/wechat_load_button"
+                android:id="@+id/qq_load_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/load"
                 tools:ignore="ButtonStyle"/>
 
             <Button
-                android:id="@+id/wechat_details_button"
+                android:id="@+id/qq_details_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/details"
                 tools:ignore="ButtonStyle"/>
 
             <Button
-                android:id="@+id/wechat_store_button"
+                android:id="@+id/qq_store_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/store"
