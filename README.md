@@ -19,6 +19,8 @@
 <div align="center">
     <img src="images/wechat_main.png" width="45%" title="微信主界面" alt="微信主界面" />
     <img src="images/wechat_details.png" width="45%" title="微信详情界面" alt="微信详情界面" />
+    <img src="images/qq_main.png" width="45%" title="QQ主界面" alt="QQ主界面" />
+    <img src="images/qq_details.png" width="45%" title="QQ详情界面" alt="QQ详情界面" />
     <img src="images/alipay_main.png" width="45%" title="支付宝主界面" alt="支付宝主界面" />
     <img src="images/alipay_details.png" width="45%" title="支付宝详情界面" alt="支付宝详情界面" />
 </div>
