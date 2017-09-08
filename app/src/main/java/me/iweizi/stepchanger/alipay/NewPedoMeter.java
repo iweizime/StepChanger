@@ -15,6 +15,7 @@ import eu.chainfire.libsuperuser.Shell;
 import me.iweizi.stepchanger.R;
 import me.iweizi.stepchanger.StepData;
 import me.iweizi.stepchanger.utils.StepCounterSensorListener;
+import me.iweizi.stepchanger.utils.Utils;
 
 /**
  * Created by iweiz on 2017/9/5.
@@ -87,19 +88,18 @@ public class NewPedoMeter extends StepData {
     @Override
     public int write(Context context) {
         killAlipayProcess(context);
-        List<APStepInfo> stepRecord = getStepRecord();
-        APStepInfo lastRecord = getLastRecord();
-        if (lastRecord == null) {
-            lastRecord = new APStepInfo();
-        }
+        ArrayList<APStepInfo> newStepRecord = new ArrayList<APStepInfo>();
+        APStepInfo newLastRecord = new APStepInfo();
         long stepDiff = getStep() - getLastUploadStep();
         long sensorStep = StepCounterSensorListener.get(context).getStep();
-        stepDiff = stepDiff - sensorStep + lastRecord.getSteps();
-        for (APStepInfo apStepInfo :
-                stepRecord) {
-            apStepInfo.setSteps(apStepInfo.getSteps() - (int) stepDiff);
+        newLastRecord.setSteps((int) (sensorStep - stepDiff));
+        long lastUploadTime = getLastUploadTime();
+        if (lastUploadTime < Utils.beginOfToday()) {
+            lastUploadTime = Utils.beginOfToday() + 1;
         }
-        saveStepRecord(stepRecord);
+        newLastRecord.setTime(lastUploadTime);
+        newStepRecord.add(newLastRecord);
+        saveStepRecord(newStepRecord);
         Shell.SH.run(new String[]{
                 "cat " + mNewPedometerPrivate + " > " + mAlipayNewPedometerPrivate
         });
@@ -194,19 +194,12 @@ public class NewPedoMeter extends StepData {
     }
 
     private APStepInfo getLastRecord() {
-        if (mNewPedometerPrivateSP == null) {
+        List<APStepInfo> stepRecord = getStepRecord();
+        if (stepRecord.isEmpty()) {
             return null;
+        } else {
+            return stepRecord.get(stepRecord.size() - 1);
         }
-
-        String stepRecordStr = mNewPedometerPrivateSP.getString("stepRecord", null);
-        if (stepRecordStr == null || stepRecordStr.isEmpty()) {
-            return null;
-        }
-        List<APStepInfo> stepRecord = JSON.parseArray(stepRecordStr, APStepInfo.class);
-        if (stepRecord == null || stepRecord.isEmpty()) {
-            return null;
-        }
-        return stepRecord.get(stepRecord.size() - 1);
     }
 
     @Override

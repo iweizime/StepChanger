@@ -12,7 +12,7 @@ class APStepInfo {
     private long time;
 
     APStepInfo() {
-        biz = "";
+        biz = "alipay";
         steps = 0;
         time = 0;
     }

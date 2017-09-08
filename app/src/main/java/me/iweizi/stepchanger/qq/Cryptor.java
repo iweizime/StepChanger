@@ -12,6 +12,7 @@ public class Cryptor {
 
     private static final long UINT32_MASK = 0xffffffffL;
     private final long[] mKey;
+    private final Random mRandom;
     private byte[] mOutput;
     private byte[] mInBlock;
     private int mIndexPos;
@@ -20,7 +21,6 @@ public class Cryptor {
     private int mPreOutPos;
     private boolean isFirstBlock;
     private boolean isRand;
-    private final Random mRandom;
 
     public Cryptor(byte[] key) {
         mKey = new long[4];

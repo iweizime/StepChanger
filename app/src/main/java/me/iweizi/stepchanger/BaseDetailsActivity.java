@@ -94,8 +94,11 @@ public abstract class BaseDetailsActivity extends AppCompatActivity {
             mLastUploadStepTV.setText(String.valueOf(mStepData.getLastUploadStep()));
             date.setTime(mStepData.getLastUploadTime());
             mLastUploadTimeTV.setText(dateFormat.format(date));
-            date.setTime(mStepData.getLastSaveTime());
-            mLastSaveTimeTV.setText(dateFormat.format(date));
+            long lastSaveTime = mStepData.getLastSaveTime();
+            if (lastSaveTime != -1) {
+                date.setTime(mStepData.getLastSaveTime());
+                mLastSaveTimeTV.setText(dateFormat.format(date));
+            }
             mLastSaveSensorStepTV.setText(String.valueOf(mStepData.getLastSaveSensorStep()));
         }
     }
