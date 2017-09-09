@@ -35,6 +35,9 @@
             android:label="@string/title_activity_qq_details"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name=".HelpActivity"
+            android:label="@string/help">
+        </activity>
     </application>
 
 </manifest>
