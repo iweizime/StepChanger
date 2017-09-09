@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.RandomAccessFile;
 
+import me.iweizi.stepchanger.R;
 import me.iweizi.stepchanger.StepData;
 import me.iweizi.stepchanger.utils.Utils;
 
@@ -36,6 +37,8 @@ public class StepInfo extends StepData {
         };
         mCryptor = new Cryptor(sKey.getBytes());
         mStepInfo = null;
+        mLoadButtonId = R.id.qq_load_button;
+        mStoreButtonId = R.id.qq_store_button;
     }
 
     public static StepInfo get() {
