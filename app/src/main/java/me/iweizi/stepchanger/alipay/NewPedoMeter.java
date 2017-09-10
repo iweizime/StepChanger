@@ -92,11 +92,13 @@ public class NewPedoMeter extends StepData {
         APStepInfo newLastRecord = new APStepInfo();
         long stepDiff = getStep() - getLastUploadStep();
         long sensorStep = StepCounterSensorListener.get(context).getStep();
-        newLastRecord.setSteps((int) (sensorStep - stepDiff));
         long lastUploadTime = getLastUploadTime();
-        if (lastUploadTime < Utils.beginOfToday()) {
-            lastUploadTime = Utils.beginOfToday() + 1;
+        long beginOfToday = Utils.beginOfToday();
+        if (lastUploadTime < beginOfToday) {
+            lastUploadTime = beginOfToday + 1;
+            stepDiff = getStep();
         }
+        newLastRecord.setSteps((int) (sensorStep - stepDiff));
         newLastRecord.setTime(lastUploadTime);
         newStepRecord.add(newLastRecord);
         saveStepRecord(newStepRecord);

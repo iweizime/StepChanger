@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 
 import eu.chainfire.libsuperuser.Shell;
+import me.iweizi.stepchanger.utils.Utils;
 
 /**
  * Created by iweiz on 2017/9/5.
@@ -59,9 +60,14 @@ public class StepData {
     private int check() {
         long current = System.currentTimeMillis();
         long lastUploadTime = getLastUploadTime();
-        double timeDiff = (current - lastUploadTime) / 1000;
         long step = getStep();
         long stepDiff = step - getLastUploadStep();
+        long beginOfToday = Utils.beginOfToday();
+        if (lastUploadTime < beginOfToday) {
+            lastUploadTime = beginOfToday;
+            stepDiff = step;
+        }
+        double timeDiff = (current - lastUploadTime) / 1000;
         double stepPerSec = stepDiff / timeDiff;
         if (step > MAX_STEP && stepPerSec > MAX_STEP_PER_SEC) {
             return TOO_MANY_FAST;
