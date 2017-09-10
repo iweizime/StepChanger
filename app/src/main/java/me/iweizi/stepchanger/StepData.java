@@ -235,9 +235,17 @@ public class StepData {
 
             if (mSuAvailable) {
                 if (isRead && canRead()) {
-                    ((Activity) mContext).findViewById(mLoadButtonId).performClick();
+                    try {
+                        ((Activity) mContext).findViewById(mLoadButtonId).performClick();
+                    } catch (NullPointerException e) {
+                        ((Activity) mContext).findViewById(R.id.details_load_button).performClick();
+                    }
                 } else if (canWrite()) {
-                    ((Activity) mContext).findViewById(mStoreButtonId).performClick();
+                    try {
+                        ((Activity) mContext).findViewById(mStoreButtonId).performClick();
+                    } catch (NullPointerException e) {
+                        ((Activity) mContext).findViewById(R.id.details_store_button).performClick();
+                    }
                 }
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
