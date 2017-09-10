@@ -1,5 +1,7 @@
 # 运动修改器
 
+支持微信、QQ、支付宝
+
 ## 下载
 [步数修改器](https://github.com/iweizime/StepChanger/releases)
 
@@ -23,4 +25,5 @@
     <img src="images/qq_details.png" width="45%" title="QQ详情界面" alt="QQ详情界面" />
     <img src="images/alipay_main.png" width="45%" title="支付宝主界面" alt="支付宝主界面" />
     <img src="images/alipay_details.png" width="45%" title="支付宝详情界面" alt="支付宝详情界面" />
+    <img src="images/help.png" width="45%/" title="帮助" alt="帮助">
 </div>

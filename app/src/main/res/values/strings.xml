@@ -36,6 +36,6 @@
     <string name="qq_change_fail">QQ运动步数修改无效？</string>
     <string name="qq_change_guide">你可能会发现更改后，在你的QQ上显示已经成功，但是在好友的QQ上你的步数没有刷新，这是因为更改后的步数还没有上传。在你手机的计步传感器步数改变后QQ就会上传步数。最快最简单的方法就是晃十几下手机。</string>
     <string name="alipay_change_fail">支付宝运动步数修改无效？</string>
-    <string name="alipay_change_guide">如果今天还没打开过支付宝，请先打开支付宝查看一下运动步数再更改。每次更改步数前，关闭支付宝，然后清空一下手机内存。</string>
+    <string name="alipay_change_guide">每次更改步数前，关闭支付宝，然后清空一下手机内存。</string>
     <string name="all_guide">短时间内改的太快可能会被服务器认为是异常，毕竟每秒钟走100步不合理，这个问题在手机端是没办法的。当然本应用还不完善，欢迎提出issue。</string>
 </resources>
