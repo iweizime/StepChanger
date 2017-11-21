@@ -10,7 +10,7 @@ public class QQDetailsActivity extends BaseDetailsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mLayoutId = R.layout.activity_qq_details;
-        mStepData = StepInfo.get();
+        mStepData = StepInfo.get(this);
         super.onCreate(savedInstanceState);
     }
 }

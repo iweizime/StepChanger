@@ -10,7 +10,6 @@ public class QQFragment extends BaseFragment {
 
     public QQFragment() {
         mLayoutId = R.layout.fragment_qq;
-        mStepData = StepInfo.get();
         mDetailsClass = QQDetailsActivity.class;
     }
 
@@ -23,6 +22,7 @@ public class QQFragment extends BaseFragment {
 
     @Override
     protected void findView(View view) {
+        mStepData = StepInfo.get(getActivity());
         mLoadButton = view.findViewById(R.id.qq_load_button);
         mStoreButton = view.findViewById(R.id.qq_store_button);
         mDetailsButton = view.findViewById(R.id.qq_details_button);
