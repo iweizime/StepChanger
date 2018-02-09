@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import com.alibaba.fastjson.JSON;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +40,8 @@ public class NewPedoMeter extends StepData {
     private final String mNewPedometerPrivate;
     private final String mAlipayNewPedometer;
     private final String mAlipayNewPedometerPrivate;
-    private final File mAlipayNewPedometerFile;
-    private final File mAlipayNewPedometerPrivateFile;
+    private final File mNewPedometerFile;
+    private final File mNewPedometerPrivateFile;
     private SharedPreferences mNewPedometerSP;
     private SharedPreferences mNewPedometerPrivateSP;
 
@@ -51,8 +52,8 @@ public class NewPedoMeter extends StepData {
         mAlipayNewPedometer = ALIPAY_SP_DIR + NEW_PEDOMETER;
         mAlipayNewPedometerPrivate = ALIPAY_SP_DIR + NEW_PEDOMETER_PRIVATE;
 
-        mAlipayNewPedometerFile = new File(mAlipayNewPedometer);
-        mAlipayNewPedometerPrivateFile = new File(mAlipayNewPedometerPrivate);
+        mNewPedometerFile = new File(mNewPedometer);
+        mNewPedometerPrivateFile = new File(mNewPedometerPrivate);
 
         File sp_dir = new File(SP_DIR);
         if (!sp_dir.exists()) {
@@ -60,9 +61,16 @@ public class NewPedoMeter extends StepData {
             sp_dir.mkdir();
         }
 
+        try {
+            if (!mNewPedometerFile.exists()) mNewPedometerFile.createNewFile();
+            if (!mNewPedometerPrivateFile.exists()) mNewPedometerPrivateFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         ROOT_CMD = new String[]{
-                "chmod o+rw " + mAlipayNewPedometer,
-                "chmod o+rw " + mAlipayNewPedometerPrivate,
+                "chmod g+rw " + mNewPedometer,
+                "chmod g+rw " + mNewPedometerPrivate,
         };
 
         mLoadButtonId = R.id.alipay_load_button;
@@ -76,12 +84,12 @@ public class NewPedoMeter extends StepData {
     @Override
     public int read(Context context) {
         killAlipayProcess(context);
-        Shell.SH.run(new String[]{
-                "cp " + mAlipayNewPedometerPrivate + " " + mNewPedometerPrivate,
-                "cp " + mAlipayNewPedometer + " " + mNewPedometer
+        Shell.SU.run(new String[]{
+                "cat " + mAlipayNewPedometerPrivate + " > " + mNewPedometerPrivate,
+                "cat " + mAlipayNewPedometer + " > " + mNewPedometer
         });
-        mNewPedometerSP = context.getSharedPreferences("NewPedoMeter", Context.MODE_PRIVATE);
-        mNewPedometerPrivateSP = context.getSharedPreferences("NewPedoMeter_private", Context.MODE_PRIVATE);
+        mNewPedometerSP = context.getSharedPreferences("NewPedoMeter", Context.MODE_MULTI_PROCESS);
+        mNewPedometerPrivateSP = context.getSharedPreferences("NewPedoMeter_private", Context.MODE_MULTI_PROCESS);
         return SUCCESS;
     }
 
@@ -102,7 +110,7 @@ public class NewPedoMeter extends StepData {
         newLastRecord.setTime(lastUploadTime);
         newStepRecord.add(newLastRecord);
         saveStepRecord(newStepRecord);
-        Shell.SH.run(new String[]{
+        Shell.SU.run(new String[]{
                 "cat " + mNewPedometerPrivate + " > " + mAlipayNewPedometerPrivate
         });
         return SUCCESS;
@@ -160,12 +168,12 @@ public class NewPedoMeter extends StepData {
 
     @Override
     protected boolean canRead() {
-        return mAlipayNewPedometerFile.canRead() && mAlipayNewPedometerPrivateFile.canRead();
+        return mNewPedometerFile.canRead() && mNewPedometerPrivateFile.canRead();
     }
 
     @Override
     protected boolean canWrite() {
-        return mAlipayNewPedometerFile.canWrite() && mAlipayNewPedometerPrivateFile.canWrite();
+        return mNewPedometerFile.canWrite() && mNewPedometerPrivateFile.canWrite();
 
     }
 
