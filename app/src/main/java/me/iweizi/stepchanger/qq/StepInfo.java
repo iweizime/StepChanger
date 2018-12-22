@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -19,6 +20,7 @@ import java.security.Signature;
 import java.security.cert.CertificateException;
 import java.util.Enumeration;
 
+import eu.chainfire.libsuperuser.Shell;
 import me.iweizi.stepchanger.R;
 import me.iweizi.stepchanger.StepData;
 import me.iweizi.stepchanger.utils.Utils;
@@ -31,8 +33,10 @@ import me.iweizi.stepchanger.utils.Utils;
 public class StepInfo extends StepData {
 
     private static StepInfo sStepInfo = null;
-    private static final String STEP_INFO = "/data/data/com.tencent.mobileqq/files/step.info";
-    private static final String STEP_SIGN_INFO = "/data/data/com.tencent.mobileqq/files/stepSign.info";
+    private static final String STEP_INFO = "/data/data/me.iweizi.stepchanger/files/step.info";
+    private static final String STEP_SIGN_INFO = "/data/data/me.iweizi.stepchanger/files/stepSign.info";
+    private static final String ORIG_STEP_INFO = "/data/data/com.tencent.mobileqq/files/step.info";
+    private static final String ORIG_STEP_SIGN_INFO = "/data/data/com.tencent.mobileqq/files/stepSign.info";
     private static final String sKey = "4eY#X@~g.+U)2%$<";
     private static final String QQ = "com.tencent.mobileqq";
     private static final String QQ_MSF = "com.tencent.mobileqq:MSF";
@@ -44,18 +48,19 @@ public class StepInfo extends StepData {
     private JSONObject mStepInfo;
     private Cryptor mCryptor;
 
-    private StepInfo(Context context) {
-        if (checkVersion(context)) {
-            ROOT_CMD = new String[]{
-                    "chmod o+rw " + STEP_INFO
-            };
-        } else {
+    private StepInfo(Context context) throws IOException {
+        File dir = context.getFilesDir();
+        if (!dir.exists())
+            dir.mkdirs();
+        if (!sStepInfoFile.exists())
+            sStepInfoFile.createNewFile();
+        if (!checkVersion(context)) {
+            if (!sStepSignInfoFile.exists())
+                sStepSignInfoFile.createNewFile();
             /* 复制key */
             int qq_uid = getUID("com.tencent.mobileqq", context);
             int my_uid = getUID("me.iweizi.stepchanger", context);
             ROOT_CMD = new String[]{
-                    "chmod o+rw " + STEP_INFO,
-                    "chmod o+rw " + STEP_SIGN_INFO,
                     "cp " + KEYSTORE_DIR + String.valueOf(qq_uid) + "_USRCERT_step_info "
                             + KEYSTORE_DIR + String.valueOf(my_uid) + "_USRCERT_step_info",
                     "cp " + KEYSTORE_DIR + String.valueOf(qq_uid) + "_USRPKEY_step_info "
@@ -72,8 +77,13 @@ public class StepInfo extends StepData {
     }
 
     public static StepInfo get(Context context) {
-        if (sStepInfo == null)
-            sStepInfo = new StepInfo(context);
+        if (sStepInfo == null) {
+            try {
+                sStepInfo = new StepInfo(context);
+            } catch (Throwable e) {
+                return null;
+            }
+        }
         return sStepInfo;
     }
 
@@ -94,6 +104,9 @@ public class StepInfo extends StepData {
         byte[] ciphertext;
         byte[] plaintext;
         try {
+            Shell.SU.run(new String[]{
+                    "cat " + ORIG_STEP_INFO + " > " + STEP_INFO
+            });
             if(checkVersion(context)) {
                 raf = new RandomAccessFile(STEP_INFO, "r");
                 ciphertext = new byte[(int) raf.length()];
@@ -140,7 +153,15 @@ public class StepInfo extends StepData {
                 String base64 = Base64.encodeToString(getSign(mStepInfo.toString().getBytes()), 0);
                 stepSignOutputStream.write(base64.getBytes());
                 stepSignOutputStream.close();
+
+                Shell.SU.run(new String[]{
+                        "cat " + STEP_SIGN_INFO + " > " + ORIG_STEP_SIGN_INFO
+                });
             }
+
+            Shell.SU.run(new String[]{
+                    "cat " + STEP_INFO + " > " + ORIG_STEP_INFO
+            });
         } catch (Throwable e) {
             return FAIL;
         }
