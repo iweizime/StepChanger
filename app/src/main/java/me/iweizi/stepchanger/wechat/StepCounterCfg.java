@@ -6,9 +6,7 @@ import android.content.Context;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 import me.iweizi.stepchanger.R;
@@ -35,31 +33,48 @@ class StepCounterCfg extends StepData {
     private static final String STEP_COUNTER_CFG = "/data/data/com.tencent.mm/MicroMsg/stepcounter.cfg";
     @SuppressLint("SdCardPath")
     private static final String MM_STEP_COUNTER_CFG = "/data/data/com.tencent.mm/MicroMsg/MM_stepcounter.cfg";
+    @SuppressLint("SdCardPath")
+    private static final String PUSH_STEP_COUNTER_CFG = "/data/data/com.tencent.mm/MicroMsg/PUSH_stepcounter.cfg";
+
+    public static final File mStepCounterCfgFile;
+    public static final File mMMStepCounterCfgFile;
+    public static final File mPUSHStepCounterCfgFile;
+
     private static final String WECHAT = "com.tencent.mm";
     private static final String WECHAT_EX = "com.tencent.mm:exdevice";
-    private static final StepCounterCfg sStepCounterCfg = new StepCounterCfg();
-    private final File mStepCounterCfgFile;
-    private final File mMMStepCounterCfgFile;
-    private HashMap<Integer, Long> mStepCounterMap = null;
+    private static StepCounterCfg sStepCounterCfg = null;
     private HashMap<Integer, ?> mMMStepCounterMap = null;
+    private StepBean mStepBean = null;
+
+
+
+    static {
+        mStepCounterCfgFile = new File(STEP_COUNTER_CFG);
+        mMMStepCounterCfgFile = new File(MM_STEP_COUNTER_CFG);
+        mPUSHStepCounterCfgFile = new File(PUSH_STEP_COUNTER_CFG);
+
+    }
 
     private StepCounterCfg() {
         super();
 
-        mStepCounterCfgFile = new File(STEP_COUNTER_CFG);
-        mMMStepCounterCfgFile = new File(MM_STEP_COUNTER_CFG);
 
         ROOT_CMD = new String[]{
-                "chmod o+rw " + mStepCounterCfgFile.getAbsolutePath(),
-                "chmod o+rw " + mMMStepCounterCfgFile.getAbsolutePath(),
-                "chmod o+x " + mStepCounterCfgFile.getParent(),
-                "chmod o+x " + mMMStepCounterCfgFile.getParent()
+                "chmod 606 " + mStepCounterCfgFile.getAbsolutePath(),
+                "chmod 606 " + mMMStepCounterCfgFile.getAbsolutePath(),
+                "chmod 606 " + mPUSHStepCounterCfgFile.getAbsolutePath(),
+                "chmod 701 " + mStepCounterCfgFile.getParent(),
+                "chmod 701 " + mMMStepCounterCfgFile.getParent(),
+                "chmod 701 " + mPUSHStepCounterCfgFile.getParent()
         };
         mLoadButtonId = R.id.wechat_load_button;
         mStoreButtonId = R.id.wechat_store_button;
     }
 
     static StepCounterCfg get() {
+        if (sStepCounterCfg == null) {
+            sStepCounterCfg = new StepCounterCfg();
+        }
         return sStepCounterCfg;
     }
 
@@ -71,12 +86,7 @@ class StepCounterCfg extends StepData {
         killWechatProcess(context);
         try {
 
-            fis = new FileInputStream(mStepCounterCfgFile);
-            ois = new ObjectInputStream(fis);
-            //noinspection unchecked
-            mStepCounterMap = (HashMap<Integer, Long>) ois.readObject();
-            ois.close();
-            fis.close();
+            mStepBean = StepBean.getBean();
 
             fis = new FileInputStream(mMMStepCounterCfgFile);
             ois = new ObjectInputStream(fis);
@@ -91,20 +101,12 @@ class StepCounterCfg extends StepData {
 
     @Override
     protected int write(Context context) {
-        FileOutputStream fos;
-        ObjectOutputStream oos;
-
-        if (mStepCounterMap == null) {
+        if (mStepBean == null) {
             return FAIL;
         }
         try {
             killWechatProcess(context);
-            fos = new FileOutputStream(STEP_COUNTER_CFG);
-            oos = new ObjectOutputStream(fos);
-            mStepCounterMap.put(CURRENT_TODAY_STEP, getStep());
-            oos.writeObject(mStepCounterMap);
-            oos.close();
-            fos.close();
+            mStepBean.write(getStep());
             return SUCCESS;
         } catch (Exception e) {
             return FAIL;
@@ -113,12 +115,12 @@ class StepCounterCfg extends StepData {
 
     @Override
     protected boolean canRead() {
-        return mStepCounterCfgFile.canRead() && mMMStepCounterCfgFile.canRead();
+        return (mPUSHStepCounterCfgFile.canRead() || mStepCounterCfgFile.canRead()) && mMMStepCounterCfgFile.canRead();
     }
 
     @Override
     protected boolean canWrite() {
-        return mStepCounterCfgFile.canWrite() && mMMStepCounterCfgFile.canWrite();
+        return (mPUSHStepCounterCfgFile.canWrite() || mStepCounterCfgFile.canWrite()) && mMMStepCounterCfgFile.canWrite();
     }
 
     @Override
@@ -143,8 +145,8 @@ class StepCounterCfg extends StepData {
 
     @Override
     public long getLastSaveTime() {
-        if (mStepCounterMap != null) {
-            return mStepCounterMap.get(LAST_SAVE_STEP_TIME);
+        if (mStepBean != null) {
+            return mStepBean.lastSaveStepTime;
         } else {
             return -1;
         }
@@ -152,8 +154,9 @@ class StepCounterCfg extends StepData {
 
     @Override
     public long getLastSaveSensorStep() {
-        if (mStepCounterMap != null) {
-            return mStepCounterMap.get(PRE_SENSOR_STEP);
+
+        if (mStepBean != null) {
+            return mStepBean.preSensorStep;
         } else {
             return -1;
         }
@@ -161,7 +164,7 @@ class StepCounterCfg extends StepData {
 
     @Override
     public boolean isLoaded() {
-        return mMMStepCounterMap != null && mStepCounterMap != null;
+        return mMMStepCounterMap != null && mStepBean != null;
     }
 
     private void killWechatProcess(Context context) {
@@ -170,4 +173,6 @@ class StepCounterCfg extends StepData {
         am.killBackgroundProcesses(WECHAT);
         am.killBackgroundProcesses(WECHAT_EX);
     }
+
+
 }
