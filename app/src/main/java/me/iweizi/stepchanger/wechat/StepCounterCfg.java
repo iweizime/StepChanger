@@ -63,9 +63,9 @@ class StepCounterCfg extends StepData {
                 "chmod 606 " + mStepCounterCfgFile.getAbsolutePath(),
                 "chmod 606 " + mMMStepCounterCfgFile.getAbsolutePath(),
                 "chmod 606 " + mPUSHStepCounterCfgFile.getAbsolutePath(),
-                "chmod 701 " + mStepCounterCfgFile.getParent(),
-                "chmod 701 " + mMMStepCounterCfgFile.getParent(),
-                "chmod 701 " + mPUSHStepCounterCfgFile.getParent()
+                "chmod 771 " + mStepCounterCfgFile.getParent(),
+                "chmod 771 " + mMMStepCounterCfgFile.getParent(),
+                "chmod 771 " + mPUSHStepCounterCfgFile.getParent()
         };
         mLoadButtonId = R.id.wechat_load_button;
         mStoreButtonId = R.id.wechat_store_button;
