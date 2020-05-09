@@ -21,10 +21,12 @@ abstract class StepBean {
     protected HashMap<Integer, Object> mStepCounterMap;
     protected File mCfgFile;
 
-    protected StepBean(File cfgFile) throws IOException, ClassNotFoundException {
+    protected StepBean(File cfgFile) {
         mCfgFile = cfgFile;
+    }
 
-        FileInputStream fis = new FileInputStream(cfgFile);
+    public void read() throws IOException, ClassCastException , ClassNotFoundException{
+        FileInputStream fis = new FileInputStream(mCfgFile);
         ObjectInputStream ois = new ObjectInputStream(fis);
         // noinspection unchecked
         mStepCounterMap = (HashMap<Integer, Object>) ois.readObject();
@@ -32,19 +34,6 @@ abstract class StepBean {
         fis.close();
 
         readConfig();
-
-    }
-
-    public static StepBean getBean() throws IOException, ClassNotFoundException {
-        if (StepCounterCfg.mPUSHStepCounterCfgFile.exists()) {
-            return new StepBeanV7(StepCounterCfg.mPUSHStepCounterCfgFile);
-        } else if (StepCounterCfg.mStepCounterCfgFile.exists()) {
-            return new StepBeanLegacy(StepCounterCfg.mStepCounterCfgFile);
-        } else {
-            throw new IllegalArgumentException();
-        }
-
-
     }
 
     public void write(long step) throws IOException {
@@ -67,7 +56,7 @@ abstract class StepBean {
 }
 
 class StepBeanLegacy extends StepBean {
-    protected StepBeanLegacy(File cfgFile) throws IOException, ClassNotFoundException {
+    public StepBeanLegacy(File cfgFile) {
         super(cfgFile);
     }
 
@@ -89,7 +78,7 @@ class StepBeanLegacy extends StepBean {
 }
 
 class StepBeanV7 extends StepBean {
-    protected StepBeanV7(File cfgFile) throws IOException, ClassNotFoundException {
+    public StepBeanV7(File cfgFile) {
         super(cfgFile);
     }
 
